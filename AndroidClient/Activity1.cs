@@ -41,18 +41,27 @@ namespace AndroidClient
                     new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent)
             };
 
-            scrollView.AddView(_layout);
+            scrollView.AddView(_layout);            
+
+            _connection = new HubConnection("http://signalr-xamarin.azurewebsites.net/");
+            ConfigureLogging(false);
+
+            this.RunAsync();
+        }
+
+        private void ConfigureLogging(bool enabled)
+        {
+            if(!enabled)
+            {
+                return;
+            }
 
             var logging = new TextView(this);
             logging.TextSize = 8.0f;
             _layout.AddView(logging, 0);
+
             var traceWriter = new TextViewWriter(_context, logging);
-
-            _connection = new HubConnection("http://signalr-xamarin.azurewebsites.net/");
             _connection.TraceWriter = traceWriter;
-            //_connection.TraceLevel = TraceLevels.None;
-
-            this.RunAsync();
         }
 
         private async Task RunAsync()
