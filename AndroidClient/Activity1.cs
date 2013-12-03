@@ -72,18 +72,10 @@ namespace AndroidClient
                 _connection.TraceWriter.WriteLine("items.Count " + items.Count);
                 foreach (var item in items)
                 {
-                    var description = new TextView(this);
-                    description.TextSize = 8.0f;
-                    description.Text = item.Description + System.Environment.NewLine;
-                    _context.Post(delegate
-                    {
-                        _layout.AddView(description, 0);
-                    }, state: null);
-                    
                     var title = new TextView(this);
                     title.TextSize = 9.0f;
                     title.SetTypeface(null, TypefaceStyle.Bold);
-                    title.Text = item.Title;                    
+                    title.Text = item.Title;
                     title.Click += (sender, e) =>
                     {
                         var uri = Android.Net.Uri.Parse(item.Link);
@@ -91,8 +83,13 @@ namespace AndroidClient
                         StartActivity(intent);
                     };
 
+                    var description = new TextView(this);
+                    description.TextSize = 8.0f;
+                    description.Text = item.Description + System.Environment.NewLine;                                        
+
                     _context.Post(delegate
                     {
+                        _layout.AddView(description, 0);
                         _layout.AddView(title, 0);
                     }, state: null);
                 }
